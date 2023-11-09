@@ -1,10 +1,25 @@
 <script>
+  import { IsLoggedIn } from '$lib/stores/auth';
   import humanize from 'humanize-plus';
+  import { goto } from '$app/navigation';
   export let data;
+
+  function logout() {
+  }
+
 </script>
 
-<h1 class="text-center text-xl font-bold">Find Your Next Job</h1>
+<nav>
+  <a href="/">Home</a>
+  {#if $IsLoggedIn} <!-- Show different buttons based on login state -->
+    <button on:click={logout}>Logout</button>
+  {:else}
+    <a href="/users/login">Login</a>
+    <a href="/users/new">Sign Up</a>
+  {/if}
+</nav>
 
+<h1 class="text-center text-xl font-bold">Find Your Next Job</h1>
 <div class="overflow-x-auto w-full">
   {#each data.jobs as job}
       <div class="flex flex-col mt-10">

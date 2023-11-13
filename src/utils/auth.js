@@ -1,7 +1,6 @@
-// myapp/src/utils/auth.js
 import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
 import { IsLoggedIn } from '$lib/stores/auth';
-
+import { writable } from 'svelte/store';
 
 const emptyAuth = {
   "token": "",
@@ -30,13 +29,13 @@ export function getTokenFromLocalStorage() {
   return null
 }
 
-export async function isLoggedIn() {
-  if (!getTokenFromLocalStorage()) {
+export async function isLoggedIn() { //exporting an async fx
+  if (!getTokenFromLocalStorage()) { // check if there is no token in storage
     IsLoggedIn.set(false); // Set the store value to false
-    return false;
+    return false; // returns to false since user is not logged in
   }
 
-  try {
+  try { //try to make POST rew to refresh authentication token
     const resp = await fetch(
       PUBLIC_BACKEND_BASE_URL + '/api/collections/users/auth-refresh',
       {
@@ -49,19 +48,20 @@ export async function isLoggedIn() {
       }
     );
 
-    const res = await resp.json()
-    if (resp.status == 200) {
+    const res = await resp.json() //parsing response as JSON
+    
+    if (resp.status == 200) { //checking if response status is OK then update authentication info in local storage
       localStorage.setItem("auth", JSON.stringify({
         "token": res.token,
         "userId": res.record.id
       }));
       
-      IsLoggedIn.set(true); // Set the store value to true
-      return true;
+      // IsLoggedIn.set(true); // Set the store value to true
+      return true; // returning true since user is logged in
     }
 
-    return false;
-  } catch {
+    return false; //vice versa
+  } catch { 
     return false;
   }
 }

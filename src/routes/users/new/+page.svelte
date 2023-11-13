@@ -1,23 +1,25 @@
 <script>
   import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
   import { goto } from '$app/navigation';
-  import { authenticateUser } from './../../../utils/auth.js';
-  import { IsLoggedIn } from '$lib/stores/auth';
+  import { authenticateUser, isLoggedIn } from './../../../utils/auth.js';
+  isLoggedIn
 
-  let formErrors = {};
+  let formErrors = {}; //Initialize form as empty object
 
-  function postSignUp() {
+  function postSignUp() { // function to navigate to main page after signing up
     goto('/');
   }
 
-  async function createUser(evt) {
-    evt.preventDefault();
+  async function createUser(evt) { // async fx  to handle user creation post sign up
+    evt.preventDefault(); //prevent default form submission to avoid page refresh
 
+    //check if pw &  pw confirmation match
     if (evt.target['password'].value != evt.target['password-confirmation'].value) {
       formErrors['password'] = { message: 'Password confirmation does not match' };
       return;
     }
-
+    
+    //create an oject with user data from the form
     const userData = {
       username: evt.target['username'].value,
       email: evt.target['email'].value,
@@ -25,6 +27,7 @@
       passwordConfirm: evt.target['password-confirmation'].value
     };
 
+    //send a POST req  to create a new user
     const resp = await fetch(PUBLIC_BACKEND_BASE_URL + '/api/collections/users/records', {
       method: 'POST',
       mode: 'cors',
@@ -34,39 +37,107 @@
       body: JSON.stringify(userData)
     });
 
+    //check response status
     if (resp.status == 200) {
       const res = await authenticateUser(userData.username, userData.password);
 
+    //check if uathentication was successful
       if (res.success) {
+    //if successful, navigate to main page
         postSignUp();
       } else {
+    //if authentication failed, throw an error
         throw 'Sign up succeeded but authentication failed';
       }
     } else {
+    //if there's an error, parse the response body as JSON and set formErrors
       const res = await resp.json();
       formErrors = res.data;
     }
   }
 </script>
 
-<nav>
-  <a href="/">Home</a>
-  {#if $IsLoggedIn} <!-- Show different buttons based on login state -->
-    <!-- You can add a logout button here if needed -->
-  {:else}
-    <a href="/users/login">Login</a>
-    <a href="/users/new">Sign Up</a>
-  {/if}
-</nav>
-
-<h1>Create an Account</h1>
-
 <h1 class="text-center text-xl">Create an Account to Post a Job</h1>
 <div class="text-center">
-  <a class="link-hover italic text-xs" href="/login">Already have an account? Click here to login instead.</a>
+    <a class="link-hover italic text-xs" href="/login" 
+        >Already have an account? Click here to login instead.</a
+    >
 </div>
 <div class="flex justify-center items-center mt-8">
-  <form on:submit={createUser} class="w-1/3">
-    <!-- Your form controls here -->
-  </form>
+    <form on:submit={createUser} class="w-1/3">
+        <div class="form-control w-full">
+            <label class="label" for="username">
+                <span class="label-text">Username</span>
+            </label>
+            <input
+                type="text"
+                name="username"
+                placeholder="johndoe"
+                class="input input-bordered w-full"
+            />
+            {#if 'username' in formErrors}
+                <label class="label" for="username">
+                    <span class="label-text-alt text-red-500">{formErrors['username'].message}</span>
+                </label>
+            {/if}
+        </div>
+
+        <div class="form-control w-full">
+            <label class="label" for="email">
+                <span class="label-text">Email</span>
+            </label>
+            <input
+                type="email"
+                name="email"
+                placeholder="john@example.com"
+                class="input input-bordered w-full"
+                required
+            />
+            {#if 'email' in formErrors}
+                <label class="label" for="email">
+                    <span class="label-text-alt text-red-500">{formErrors['email'].message}</span>
+                </label>
+            {/if}
+        </div>
+
+        <div class="form-control w-full">
+            <label class="label" for="password">
+                <span class="label-text">Password</span>
+            </label>
+            <input
+                type="password"
+                name="password"
+                placeholder=""
+                class="input input-bordered w-full"
+                required
+            />
+            {#if 'password' in formErrors}
+                <label class="label" for="password">
+                    <span class="label-text-alt text-red-500">{formErrors['password'].message}</span>
+                </label>
+            {/if}
+        </div>
+
+        <div class="form-control w-full">
+            <label class="label" for="password">
+                <span class="label-text">Confirm Password</span>
+            </label>
+            <input
+                type="password"
+                name="password-confirmation"
+                placeholder=""
+                class="input input-bordered w-full"
+                required
+            />
+            {#if 'password' in formErrors}
+                <label class="label" for="password">
+                    <span class="label-text-alt text-red-500">{formErrors['password'].message}</span>
+                </label>
+            {/if}
+        </div>
+
+        <div class="form-control w-full mt-4">
+            <button class="btn btn-md">Create an Account</button>
+        </div>
+    </form>
 </div>

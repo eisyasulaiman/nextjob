@@ -1,49 +1,62 @@
 <script>
-  import { IsLoggedIn } from '$lib/stores/auth';
+  import { IsLoggedIn } from '../lib/stores/auth';
   import humanize from 'humanize-plus';
   import { goto } from '$app/navigation';
-  export let data;
+
+  export let data; // Fix syntax for export
+
+  let error = null;
+  let isSubmitting = false;
 
   function logout() {
+    IsLoggedIn.set(false);
+    goto('/');
   }
 
-</script>
+  async function handleLogin(evt) {
+    evt.preventDefault();
 
-<nav>
-  <a href="/">Home</a>
-  {#if $IsLoggedIn} <!-- Show different buttons based on login state -->
-    <button on:click={logout}>Logout</button>
-  {:else}
-    <a href="/users/login">Login</a>
-    <a href="/users/new">Sign Up</a>
-  {/if}
-</nav>
+    // Your login logic here
+
+    isSubmitting = true;
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      IsLoggedIn.set(true);
+      goto('/');
+    } catch (err) {
+      error = 'Login failed. Please check your credentials.';
+    } finally {
+      isSubmitting = false;
+    }
+  }
+</script>
 
 <h1 class="text-center text-xl font-bold">Find Your Next Job</h1>
 <div class="overflow-x-auto w-full">
   {#each data.jobs as job}
-      <div class="flex flex-col mt-10">
-          <div>
-              <a class="font-bold text-2xl" href="/jobs/{job.id}">{job.title}</a>
-              <div class="text-sm mt-1">
-                  {job.employer} . {job.location} .
-                  <span class="text-sm">USD {humanize.formatNumber(job.minAnnualCompensation)} - USD {humanize.formatNumber(
-                          job.maxAnnualCompensation
-                      )}</span>
-              </div>
-              <div class="italic text-xs opacity-50 mt-2">
-                 posted {new Date(job.created).toLocaleDateString(undefined, {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                 })}
-            </div>
-          </div>
-
-          <div class="mt-4 ">
-              {job.description.slice(0, 240)}...
-          </div>
+    <div class="flex flex-col mt-10">
+      <div>
+        <a class="font-bold text-2xl" href="/jobs/{job.id}">{job.title}</a>
+        <div class="text-sm mt-1">
+          {job.employer} . {job.location} .
+          <span class="text-sm">USD {humanize.formatNumber(job.minAnnualCompensation)} - USD {humanize.formatNumber(
+                  job.maxAnnualCompensation
+              )}</span>
+        </div>
+        <div class="italic text-xs opacity-50 mt-2">
+          posted {new Date(job.created).toLocaleDateString(undefined, {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+          })}
+        </div>
       </div>
+
+      <div class="mt-4 ">
+        {job.description.slice(0, 240)}...
+      </div>
+    </div>
   {/each}
 </div> 
+

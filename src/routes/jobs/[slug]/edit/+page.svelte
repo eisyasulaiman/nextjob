@@ -1,7 +1,7 @@
 <script>
     import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
     import { goto } from '$app/navigation';
-    import { GetUserId } from './../../../utils/auth.js';
+    import { GetUserId } from '../../../../utils/auth.js';
   
     let formErrors = {};
     let minAnnual = 1;

@@ -19,6 +19,10 @@
     function signup() {
       // Perform signup logic
     }
+    function postJob(){
+      // perform post job logic
+
+    }
   </script>
   
   <div>

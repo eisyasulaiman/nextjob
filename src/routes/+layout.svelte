@@ -14,6 +14,8 @@
   <a href="/">Home</a>
   {#if $IsLoggedIn} 
     <button on:click={logUserOut}>Logout</button>
+    <a href="/users/postjobs">Post a Job</a>
+
   {:else}
     <a href="/users/login">Login</a>
     <a href="/users/new">Sign Up</a>

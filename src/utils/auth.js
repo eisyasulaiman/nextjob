@@ -13,7 +13,7 @@ export function logOut() {
   return true;
 }
 
-export function getUserId() {
+export function GetUserId() {
   const auth = localStorage.getItem("auth")
   if (auth) {
     return JSON.parse(auth)["userId"]

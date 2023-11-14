@@ -3,7 +3,6 @@
   import { goto } from '$app/navigation';
   import { authenticateUser, isLoggedIn  ,GetUserId } from './../../../utils/auth.js';
 
-
 let formErrors = {}; //Initialize form as empty object
 let minAnnual=1;
 let maxAnnual=1;
@@ -113,11 +112,7 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
           {/if}
 
           <label class="label" for="salary"><span class="label-text-alt">USD</span> <span class="label-text-alt">per annum</span></label>
-          <!-- {#if error}
-            <label class="label" for="maxannual">
-              <span class="label-text-alt text-red-500">{error}</span>
-            </label>
-          {/if} -->
+         
         </div>
         <div class="form-control w-full">
           <label class="label" for="companyName">
@@ -128,13 +123,7 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
             name="companyName"
             placeholder="e.g Facebook"
             class="input input-bordered w-full"
-            required
-          />
-          <!-- {#if error}
-            <label class="label" for="companyname">
-              <span class="label-text-alt text-red-500">{error}</span>
-            </label>
-          {/if} -->
+            required />
         </div>
     
         <div class="form-control w-full">
@@ -172,13 +161,7 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
             name="requirement"
             placeholder=""
             class="input input-bordered w-full"
-            required
-          />
-          <!-- {#if error}
-            <label class="label" for="requirement">
-              <span class="label-text-alt text-red-500">{error}</span>
-            </label>
-          {/if} -->
+            required />
         </div>
     
         <div class="form-control w-full">
@@ -190,13 +173,13 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
             name="applicationInstructions"
             placeholder=""
             class="input input-bordered w-full"
-            required
-          />
+            required/>
        </div>
     
         <div class="form-control w-full mt-4">
             <button class="btn btn-md">Post a Job</button>
         </div>
       </form>
-    </div>
-    
+
+</div>
+   

@@ -1,8 +1,24 @@
 <script>
     import SvelteMarkdown from 'svelte-markdown';
     import humanize from 'humanize-plus';
+    import { GetUserId } from '../../../utils/auth.js';
+    import { goto } from '$app/navigation';
     export let data;
+    
+    let isUser = GetUserId();
+
+    function navigateToMainPage() {
+        goto('/');
+    }
+
+    function navigateToEditPage() {
+        goto(`/jobs/${data.job.id}/edit`);
+    }
 </script>
+
+<div class="main-button">
+    <button class="main-button theme-button" on:click={navigateToMainPage}> Jobseeker </button>
+</div>
 
 <div class="mt-10">
     <div class="flex">
@@ -33,6 +49,12 @@
                     data.job.maxAnnualCompensation
                 )}
             </p>
+            
+            {#if isUser === data.job.user}
+            <div class="lower-content">
+                <button on:click={navigateToEditPage} class="font-bold text-2xl">Edit</button>
+            </div>
+            {/if}
         </div>
     </div>
 </div>

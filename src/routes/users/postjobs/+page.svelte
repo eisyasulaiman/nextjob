@@ -2,6 +2,7 @@
   import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
   import { goto } from '$app/navigation';
   import { authenticateUser, isLoggedIn  ,GetUserId } from './../../../utils/auth.js';
+  import { alerts } from "./../lib/stores/Alerts.svelte";
 
 let formErrors = {}; //Initialize form as empty object
 let minAnnual=1;
@@ -58,7 +59,7 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
     formErrors = res.data;
   }
 }
-    
+
 </script>
 
     <div class="flex justify-center items-center flex-col mt-8">
@@ -82,11 +83,11 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
             <span class="label-text">Min Annual Compensation</span>
           </label>
           <style>
-    
-          input[type=number]::-webkit-inner-spin-button {
-            opacity: 1
-        }</style>
-    
+            input[type=number]::-webkit-inner-spin-button {
+              opacity: 1;
+            }
+          </style>
+
         <input bind:value={minAnnual} id="minAnnual" type="number" name="minAnnual"
         placeholder="40000"
         class="input input-bordered w-full"/>

@@ -22,6 +22,4 @@
     <a href="/users/postjobs">Post a Job</a>
   {/if}
 </nav>
-
-
 <slot />

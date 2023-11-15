@@ -20,6 +20,12 @@
     <button class="main-button theme-button" on:click={navigateToMainPage}> Jobseeker </button>
 </div>
 
+{#if isUser === data.job.user}
+<div class="lower-content">
+    <button on:click={navigateToEditPage} class="font-bold text-2xl">Edit</button>
+</div>
+{/if}
+
 <div class="mt-10">
     <div class="flex">
         <div class="flex-1">
@@ -50,11 +56,7 @@
                 )}
             </p>
             
-            {#if isUser === data.job.user}
-            <div class="lower-content">
-                <button on:click={navigateToEditPage} class="font-bold text-2xl">Edit</button>
-            </div>
-            {/if}
+           
         </div>
     </div>
 </div>

@@ -10,16 +10,18 @@
     let title = data.jobs.title;
     let minAnnualCompensation = data.jobs.minAnnualCompensation;
     let maxAnnualCompensation = data.jobs.maxAnnualCompensation;
-    let employer = data.jobs.companyName;
+    let employer = data.jobs.employer;
     let location = data.jobs.location;
     let description = data.jobs.description;
     let requirements = data.jobs.requirements;
     let applicationInstructions = data.jobs.applicationInstructions;
+
+    console.log(id)
   
     async function handleEdit(evt) {
       evt.preventDefault();
   
-      const data = {
+      const updatedData = {
       title: title,
       minAnnualCompensation: minAnnualCompensation,
       maxAnnualCompensation: maxAnnualCompensation,
@@ -36,7 +38,7 @@
         'Content-Type': 'application/json',
         'Authorization': getTokenFromLocalStorage() 
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(updatedData),
     });
 
     console.log('Server response:', resp);

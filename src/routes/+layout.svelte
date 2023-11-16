@@ -3,7 +3,8 @@
   import { IsLoggedIn } from '../lib/stores/auth';
   import { logOut} from '../utils/auth'
   import {goto} from '$app/navigation'
-  
+  import Alerts from '../lib/stores/Alert.svelte';
+
   function logUserOut(){
     logOut()
     goto('/users/login')
@@ -22,4 +23,5 @@
     <a href="/users/postjobs">Post a Job</a>
   {/if}
 </nav>
+<Alerts />
 <slot />

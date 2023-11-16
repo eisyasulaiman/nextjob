@@ -1,6 +1,6 @@
 <script>
-  import { alerts } from "../lib/stores/Alerts.svelte";
-  
+  import { alerts } from "./alert.js";
+
   let alertType = null;
   let alertMessage = null;
 
@@ -9,6 +9,11 @@
       alertType = $alerts.type;
       alertMessage = $alerts.message;
   }
+
+  // Reset alerts on navigation
+  window.addEventListener('navigate', () => {
+    resetAlerts();
+  });
 
   // Reset
   function resetAlerts() {
@@ -22,10 +27,9 @@
     }
   }
 
-  // This gets called as soon as navigation happens
-  afterNavigate(() => resetAlerts());
-
-
+  // // This gets called as soon as navigation happens
+  // afterNavigate(() => resetAlerts());
+  
 </script>
 
 {#if alertMessage}

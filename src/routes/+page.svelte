@@ -5,30 +5,6 @@
 
   export let data; // Fix syntax for export
 
-  let error = null;
-  let isSubmitting = false;
-
-  function logout() {
-    IsLoggedIn.set(false);
-    goto('/');
-  }
-
-  async function handleLogin(evt) {
-    evt.preventDefault();
-
-    // Your login logic here
-
-    isSubmitting = true;
-    try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      IsLoggedIn.set(true);
-      goto('/');
-    } catch (err) {
-      error = 'Login failed. Please check your credentials.';
-    } finally {
-      isSubmitting = false;
-    }
-  }
 </script>
 
 <h1 class="text-center text-xl font-bold">Find Your Next Job</h1>

@@ -11,6 +11,8 @@
   }
 </script>
 
+<Alerts />
+
 <nav>
   <a href="/">Home</a>
   {#if $IsLoggedIn} 
@@ -23,5 +25,5 @@
     <a href="/users/postjobs">Post a Job</a>
   {/if}
 </nav>
-<Alerts />
+
 <slot />

@@ -2,7 +2,8 @@
   import { PUBLIC_BACKEND_BASE_URL } from '$env/static/public';
   import { goto } from '$app/navigation';
   import { authenticateUser, isLoggedIn  ,GetUserId } from './../../../utils/auth.js';
-  import { alerts } from "./../lib/stores/Alerts.svelte";
+  import Alert from '../../../lib/stores/Alert.svelte';
+  Alert
 
 let formErrors = {}; //Initialize form as empty object
 let minAnnual=1;
@@ -44,21 +45,32 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
 
   //check response status
   if (resp.status == 200) {
-    const res = await resp.json();
-    id=res.id 
-    // idReturned= resp.data.id 
-    // const res = await authenticateUser(userData.username, userData.password);
-    console.log("YAY");
-    console.log(id);
-    jobURL+=id;
-    postCreateJob(id);
-
+    const responseJson = JSON.parse(responseText);
+    const id = responseJson.id;
+    const url = `/jobs/${id}`;
+    goto('/');
+    goto(url, { replace: true });
+    alerts.setAlert('success', 'Job Submitted!');
   } else {
-  //if there's an error, parse the response body as JSON and set formErrors
-    const res = await resp.json();
-    formErrors = res.data;
+    console.error('Submission failed:', resp.status);
+    formErrors.general = 'Submission failed. Please try again.';
+    alerts.setAlert('error', 'Submission failed. Please try again.');
   }
 }
+//     const res = await resp.json();
+//     id=res.id 
+    
+//     console.log("YAY");
+//     console.log(id);
+//     jobURL+=id;
+//     postCreateJob(id);
+
+//   } else {
+//   //if there's an error, parse the response body as JSON and set formErrors
+//     const res = await resp.json();
+//     formErrors = res.data;
+//   }
+// }
 
 </script>
 

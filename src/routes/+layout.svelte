@@ -4,16 +4,18 @@
   import { logOut} from '../utils/auth'
   import {goto} from '$app/navigation'
   import Alerts from '../lib/stores/Alert.svelte';
+  // import '/fonts.css';
 
   function logUserOut(){
     logOut()
     goto('/users/login')
   }
+  
 </script>
 
 <Alerts />
 
-<nav>
+ <nav>
   <a href="/">Home</a>
   {#if $IsLoggedIn} 
     <button on:click={logUserOut}>Logout</button>
@@ -24,6 +26,7 @@
     <a href="/users/new">Sign Up</a>
     <a href="/users/postjobs">Post a Job</a>
   {/if}
+
 </nav>
 
 <slot />

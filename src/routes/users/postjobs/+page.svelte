@@ -5,19 +5,22 @@
   import Alert from '../../../lib/stores/Alert.svelte';
   Alert
 
-let formErrors = {}; //Initialize form as empty object
+let isSubmitting = false;
 let minAnnual=1;
 let maxAnnual=1;
 let id="";
 let jobURL="/jobs/";
 
-function postCreateJob(id) { // function to navigate to main page after signing up
+let formErrors = {}; //Initialize form as empty object
+
+function postCreateJob(id) { // fx to navigate to main page after signing up
   goto(jobURL);
 }
 
 async function createJob(evt) { // async fx  to handle user creation post sign up
   evt.preventDefault(); //prevent default form submission to avoid page refresh
-  
+  isSubmitting = true;
+
   //create an oject with user data from the form
   const userData = {
     title: evt.target['jobtitle'].value,
@@ -57,20 +60,6 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
     alerts.setAlert('error', 'Submission failed. Please try again.');
   }
 }
-//     const res = await resp.json();
-//     id=res.id 
-    
-//     console.log("YAY");
-//     console.log(id);
-//     jobURL+=id;
-//     postCreateJob(id);
-
-//   } else {
-//   //if there's an error, parse the response body as JSON and set formErrors
-//     const res = await resp.json();
-//     formErrors = res.data;
-//   }
-// }
 
 </script>
 
@@ -190,9 +179,12 @@ async function createJob(evt) { // async fx  to handle user creation post sign u
        </div>
     
         <div class="form-control w-full mt-4">
-            <button class="btn btn-md">Post a Job</button>
-        </div>
-      </form>
-
-</div>
-   
+          {#if isSubmitting}
+          <button class="btn btn-md">
+            <span class="loading loading-spinner loading-xs" on:durationchange={100} ></span>Submit</button>
+          {:else}
+          <button class="btn btn-md">Submit</button>
+          {/if}
+          </div>
+     </form>
+    </div>

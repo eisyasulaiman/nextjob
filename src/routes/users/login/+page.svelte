@@ -1,8 +1,9 @@
 <script>
+  import { afterUpdate } from 'svelte';
   import { goto } from '$app/navigation';
+  import { alerts } from '../../../lib/stores/alert';
   import { IsLoggedIn } from '../../../lib/stores/auth';
-  import { authenticateUser, logOut } from '/src/utils/auth.js';
-  // import { alerts } from "../../lib/stores/alert.js";
+  import { authenticateUser, logOut } from '../../../utils/auth';
 
   let username = '';
   let password = '';
@@ -25,24 +26,28 @@
     const res = await authenticateUser(userData.username, userData.password);
 
     if (res.success) {
-  //   IsLoggedIn.set(true);
-  //   localStorage.setItem('isLoggedIn', 'true');
-  //   console.log('Login successful');
-  //   alerts.setAlert('success', 'Login successful!');
-  //   goto('/');
-  // } else {
-  //   console.log('Login failed');
-  //   alerts.setAlert('error', 'Invalid credentials. Please try again.');
-  // }
-      window.alert('Login successful!');
-      goto('/');
-    } else {
-      console.log('Login failed');
-      error = 'Invalid credentials. Please try again.';
-    }
-
-    isSubmitting = false;
+    
+    alerts.setAlert('Login successful!', 'success');
+    
+    //clear alert after 5 seconds
+    afterUpdate(() => {
+        setTimeout(() => {
+            alertMessage = null;
+        }, 5000);
+    });
+    goto('/');
+    
+  } else {
+    console.log('Login failed');
+    alerts.setAlert('Invalid credentials. Please try again.', 'error');
   }
+  afterUpdate(() => {
+        setTimeout(() => {
+            alertMessage = null;
+        }, 5000);
+    });
+}
+
 </script>
 
 <div class="flex justify-center items-center flex-col mt-8">

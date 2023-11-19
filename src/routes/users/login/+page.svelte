@@ -12,7 +12,7 @@
 
   function navigateToMainPage() {
     logOut(); 
-    goto('/users/login');
+    goto('/');
   }
 
   async function handleLogin(evt) {
@@ -40,12 +40,14 @@
   } else {
     console.log('Login failed');
     alerts.setAlert('Invalid credentials. Please try again.', 'error');
-  }
-  afterUpdate(() => {
+    
+    afterUpdate(() => {
         setTimeout(() => {
             alertMessage = null;
         }, 5000);
     });
+  }
+  
 }
 
 </script>
